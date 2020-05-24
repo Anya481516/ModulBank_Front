@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import {NavLink} from 'react-router-dom'; 
 import {connect} from 'react-redux';
 import {userPostFetch} from '../modules/accounts/actions/Actions';
-import axios from 'axios'
 
 export class Signup extends React.Component {
 
@@ -19,32 +18,33 @@ export class Signup extends React.Component {
     });
   }
 
-  handleSubmit = event => {
-    event.preventDefault()
+  handleSubmit(completion){
     //return <Redirect to='/login' />
-    //this.props.userPostFetch(this.state)
-    
-    const url = 'https://localhost:44334/user/signup';
-    const Data = {
-      email: 'melxxova@mail.ru',
-      username: 'Anna',
-      password:'Anna'
-    }
-      return fetch(url, {
-          method: 'POST',
-          
-          //body: JSON.stringify({user})
-          body: JSON.stringify(Data)
-        })
-          .then(response => response.json())
-          .then(data => {
-            this.state.username = data;
-            localStorage.setItem("token", data);
-          })
-          .catch((error) => {
-            this.state.username = error;
-            localStorage.setItem("token", error);
-          });
+    //this.props.userPostFetch()
+    var params = {
+      "Email": this.state.email,
+      "Username": this.state.username,
+      "Password": this.state.password
+      }
+  var xhr = new XMLHttpRequest();
+  // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+  xhr.open('POST', 'https://localhost:44334/user/signup', false);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  // 3. Отсылаем запрос
+  xhr.send(JSON.stringify(params));
+  if (xhr.status != 200) {
+    // обработать ошибку
+    alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+    localStorage.setItem("token", xhr.status + ': ' + xhr.statusText );
+  } else {
+    // вывести результат
+    alert( xhr.responseText ); // responseText -- текст ответа.
+    localStorage.setItem("token", xhr.responseText);
+    localStorage.setItem("userEmail", this.state.email);
+
+    //this.props.login; 
+    completion();
+  }
   }
 
 
@@ -96,26 +96,10 @@ export class Signup extends React.Component {
             </div>
             <div className="form-group">
             <button 
-              onClick={ 
-                fetch('https://localhost:44334/user/signup', {
-                  method: 'POST',
-                  //body: JSON.stringify({user})
-                  body: JSON.stringify({
-                    "email": "melxxova@mail.ru",
-                    "username": "Anna",
-                    "password": "Anna"
-                  })
-                })
-                  .then(response => response.json())
-                  .then(data => {
-                    this.state.username = data;
-                    localStorage.setItem("token", data);
-                  })
-                  .catch((error) => {
-                    this.state.username = error;
-                    localStorage.setItem("token", error);
-                  }),
-                 this.props.login } 
+              onClick={ () =>
+                 this.handleSubmit(this.props.login)
+                 //this.props.login 
+                } 
               type="submit" 
               className="btn btn-primary">Зарегистрироваться</button>
             </div>

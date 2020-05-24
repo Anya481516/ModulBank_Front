@@ -1,5 +1,5 @@
 export const userPostFetch = async user => {
-  localStorage.setItem("token", "yoooo");
+  //localStorage.setItem("token", "yoooo");
   const Data = {
     email: 'melxxova@mail.ru',
     username: 'Anna',
@@ -15,14 +15,13 @@ export const userPostFetch = async user => {
       body: JSON.stringify({ user })
     });
     const data = await response.json();
-    localStorage.setItem("token", data);
+    localStorage.setItem("token", " data with signup in actions");
   }
   catch (error) {
-    localStorage.setItem("token", error);
+    localStorage.setItem("token", "error with signup in actions");
   }
         
     }
-  
   
   const loginUser = userObj => ({
       type: 'LOGIN_USER',

@@ -3,29 +3,58 @@ import { Redirect } from 'react-router-dom';
 
 export class Home extends React.Component {
 
-constructor(props){
-    super(props);
-    this.state = {username: String};
-}
+    state = {
+        id: "",
+        email: "",
+        username: "",
+        password: "",
+        passwordHash: "",
+        salt: "",
+        
+      }
+
+// constructor(props){
+//     super(props);
+//     this.state = {username: String};
+// }
 
 componentDidMount(){
     this.refreshUser()
 }
 
 refreshUser(){
-    this.setState({
-        username: "Anya"
-    })
-   
+    const Data = {
+        Email: localStorage.userEmail
+      }
+      var xhr = new XMLHttpRequest();
+      // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+      xhr.open('POST', 'https://localhost:44334/user/getByEmail', false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Token', localStorage.token);
+      // 3. Отсылаем запрос
+      xhr.send(JSON.stringify(Data));
+      if (xhr.status != 200) {
+        // обработать ошибку
+        alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+        //localStorage.setItem("token", xhr.status + ': ' + xhr.statusText );
+      } else {
+        // вывести результат
+        alert( xhr.responseText ); // responseText -- текст ответа.
+        
+        //yo.props.login;
+        //completion();
+      }
 }
 
     render(){
+        //localStorage.token = "yo";
         const token = localStorage.token;
+        const userEmail = localStorage.userEmail;
         const {username} = this.state
         return(
             <div className = "mt-5 d-flex justify-content-left">
                 <form>
-                    <label>ГЛАВНАЯ СТРАНИЦА {token}</label>
+        <label>ГЛАВНАЯ СТРАНИЦА {userEmail}</label>
                     <div className="form-row border border-primary">
                         <div className="m-2 pb-1">
                             <label id="homeTotalBalance">ОБЩИЙ БАЛАНС СЧЕТОВ</label>
