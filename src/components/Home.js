@@ -7,10 +7,9 @@ export class Home extends React.Component {
         id: "",
         email: "",
         username: "",
-        password: "",
-        passwordHash: "",
-        salt: "",
-        
+        accs: "",
+        totalBalance: "",
+        accNumber: ""
       }
 
 // constructor(props){
@@ -19,18 +18,18 @@ export class Home extends React.Component {
 // }
 
 componentDidMount(){
-    this.refreshUser()
+    //this.refreshUser()
 }
 
 refreshUser(){
     const Data = {
-        Email: localStorage.userEmail
+        "Email": localStorage.userEmail
       }
       var xhr = new XMLHttpRequest();
       // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
-      xhr.open('POST', 'https://localhost:44334/user/getByEmail', false);
+      xhr.open('POST', 'https://localhost:44334/user/getAllInfo', false);
       xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('Token', localStorage.token);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
       // 3. Отсылаем запрос
       xhr.send(JSON.stringify(Data));
       if (xhr.status != 200) {
@@ -39,31 +38,37 @@ refreshUser(){
         //localStorage.setItem("token", xhr.status + ': ' + xhr.statusText );
       } else {
         // вывести результат
+        this.state.id = JSON.parse(xhr.responseText).user.id;
+        this.state.username = JSON.parse(xhr.responseText).user.username;
+        this.state.userEmail = JSON.parse(xhr.responseText).user.email;
+        this.state.totalBalance = JSON.parse(xhr.responseText).totalAmount;
+        this.state.accNumber = JSON.parse(xhr.responseText).accNumber;
+        this.state.accs = JSON.parse(xhr.responseText).accs;
         alert( xhr.responseText ); // responseText -- текст ответа.
-        
-        //yo.props.login;
-        //completion();
       }
 }
 
     render(){
-        //localStorage.token = "yo";
+        //localStorage.userId = "yo";
+       this.refreshUser();
         const token = localStorage.token;
         const userEmail = localStorage.userEmail;
-        const {username} = this.state
+        const userId = localStorage.userId;
+        const userName = this.state.username;
+        const totalBalance = this.state.totalBalance;
         return(
             <div className = "mt-5 d-flex justify-content-left">
                 <form>
-        <label>ГЛАВНАЯ СТРАНИЦА {userEmail}</label>
+        <label>ГЛАВНАЯ СТРАНИЦА {userId}</label>
                     <div className="form-row border border-primary">
                         <div className="m-2 pb-1">
-                            <label id="homeTotalBalance">ОБЩИЙ БАЛАНС СЧЕТОВ</label>
+        <label id="homeTotalBalance">ОБЩИЙ БАЛАНС: {totalBalance}</label>
                         </div>
                         <div className="m-2 pb-1">
                             <label id="homeDate">19.05.2020</label>
                         </div>
                         <div className="m-2 pb-1">
-        <label id="homeName">{username} {username}</label>
+        <label id="homeName">NAME: {userName}</label>
                         </div>
                         <div className="m-2 pb-1">
                             <button type="settings" className="btn btn-primary">Настройки</button>

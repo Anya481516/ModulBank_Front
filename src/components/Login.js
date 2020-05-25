@@ -18,6 +18,53 @@ export class Login extends React.Component {
     });
   }
 
+  refreshUser(){
+    var params = {
+      "Email": this.state.email,
+      }
+  var xhr = new XMLHttpRequest();
+  // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+  xhr.open('POST', 'https://localhost:44334/user/getAllInfo', false);
+  xhr.setRequestHeader('Content-Type', 'application/json');//
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+  // 3. Отсылаем запрос
+  xhr.send(JSON.stringify(params));
+  if (xhr.status != 200) {
+    // обработать ошибку
+    alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+    //localStorage.setItem("token", xhr.status + ': ' + xhr.statusText );
+  } else {
+    // вывести результат
+    alert( xhr.responseText ); // responseText -- текст ответа.
+    //var id = JSON.parse(xhr.responseText).id;
+    //localStorage.setItem("userId", id);
+  }
+}
+
+  handleGetUserID() {
+    var params = {
+      "Email": this.state.email,
+      }
+  var xhr = new XMLHttpRequest();
+  // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+  xhr.open('POST', 'https://localhost:44334/user/getByEmail', false);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  //xhr.setRequestHeader('Token', localStorage.token);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+  // 3. Отсылаем запрос
+  xhr.send(JSON.stringify(params));
+  if (xhr.status != 200) {
+    // обработать ошибку
+    alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+    //localStorage.setItem("token", xhr.status + ': ' + xhr.statusText );
+  } else {
+    // вывести результат
+    alert( xhr.responseText ); // responseText -- текст ответа.
+    var id = JSON.parse(xhr.responseText).id;
+    localStorage.setItem("userId", id);
+  }
+  }
+
   handleSubmit(completion) {
     //event.preventDefault()
     //this.props.userLoginFetch(this.state)
@@ -43,46 +90,21 @@ export class Login extends React.Component {
     localStorage.setItem("token", token);
     localStorage.setItem("userEmail", this.state.email);
     //yo.props.login;
+    this.handleGetUserID();
+    //this.refreshUser();
     completion();
   }
   }
 
-  constructor(props){
-    super(props);
-    this.state = {token: String};
-}
+  // constructor(props){
+  //   super(props);
+  //   this.state = {token: String};
+//}
 
 componentDidMount(){
     //this.getToken()
 }
 
-  getToken(){
-  //   const Url='https://localhost:44334/user/login';
-  //   const Data={
-  //     "Email": "Nikitka@mail.ru",
-  //     "Password": "Nikitka"
-  //   }
-  //   const otherParam={
-  //     headers:{
-  //       'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //     },
-  //     body:Data,
-  //     method:'POST'
-  //   }
-  //   fetch(Url, otherParam)
-  //   .then(data=>{return data.json})
-  //   .then(res=>{
-  //     this.setState({
-  //     token: res
-  //   })})
-  //   .catch(error=>{
-  //     this.setState({
-  //     token: error.message
-  //   })
-  // })
-
-}
     render(){
 
       const {token} = this.state
@@ -119,7 +141,8 @@ componentDidMount(){
                 />
             </div>
             <div className="form-group">
-              <button onClick={ () =>
+              <button onClick={
+                () =>
                 this.handleSubmit(this.props.login)
                 //() => this.props.login
                 } type="submit" className="btn btn-primary">Войти {token} </button>
