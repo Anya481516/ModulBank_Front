@@ -107,7 +107,7 @@ componentDidMount(){
 
     render(){
 
-      const {token} = this.state
+      //const {token} = localStorage.token
 
       if (this.props.authorized) {
         return <Redirect to="/Home"/>;
@@ -144,8 +144,7 @@ componentDidMount(){
               <button onClick={
                 () =>
                 this.handleSubmit(this.props.login)
-                //() => this.props.login
-                } type="submit" className="btn btn-primary">Войти {token} </button>
+                } type="submit" className="btn btn-primary">Войти</button>
             </div>
             <div className="form-group">
         <NavLink className="d-inline p-2 bg-dark text-white" to="/signup">РЕГИСТРАЦИЯ</NavLink>

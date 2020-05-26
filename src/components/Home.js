@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import { Redirect } from 'react-router-dom';
+import Select, { components } from 'react-select';
+import {NavLink} from 'react-router-dom'; 
 
 export class Home extends React.Component {
 
@@ -9,16 +11,23 @@ export class Home extends React.Component {
         username: "",
         accs: "",
         totalBalance: "",
-        accNumber: ""
+        accNumber: "",
+        chosenIndex: 0,
+        chosenAcc: "",
+
       }
 
-// constructor(props){
-//     super(props);
-//     this.state = {username: String};
-// }
+constructor(props){
+    super(props);
+    this.myRef = React.createRef();
+}
 
 componentDidMount(){
     //this.refreshUser()
+}
+
+handleChange(value) {
+    this.setState({ chosenAcc: value })
 }
 
 refreshUser(){
@@ -56,8 +65,26 @@ refreshUser(){
         const userId = localStorage.userId;
         const userName = this.state.username;
         const totalBalance = this.state.totalBalance;
+        const accs = this.state.accs;
+        const accNumber = this.state.accNumber;
+        const chosenIndex = this.state.chosenIndex
+        const chosenAcc = this.state.chosenAcc
+        const accsForSelect = {
+            // for (let step = 0; step < 5; step++) {
+            //     // Runs 5 times, with values of step 0 through 4.
+            //     console.log('Walking east one step');
+            //   }
+            "Email": localStorage.userEmail
+          }
+        const options = [
+            { value: 'blues', label: accs[0].accNumber },
+            { value: 'rock', label: accs[1].accNumber },
+            { value: 'jazz', label: accs[2].accNumber }
+          ];
+
+        //const node = React.findDOMNode(this.refs.homeAccNumberSelect).selectedIndex
         return(
-            <div className = "mt-5 d-flex justify-content-left">
+            <div className = "mt-5 d-flex justify-content-left" ref={this.myRef}>
                 <form>
         <label>ГЛАВНАЯ СТРАНИЦА {userId}</label>
                     <div className="form-row border border-primary">
@@ -79,10 +106,10 @@ refreshUser(){
                     </div>
                     <div className="form-row border border-success">
                         <div className="border border-primary m-1 pb-1">
-                            <label id="homeAccNumberLbl">НОМЕР СЧЕТА</label>
+        <label id="homeAccNumberLbl">НОМЕР СЧЕТА: {accs[chosenIndex].accNumber}</label>
                             <div className="form-row">
-                                <label id="homeBalanceLbl" className="m-2">БАЛАНС</label>
-                                <label id="homeShowBalanceLbl" className="m-2">$10000</label>
+                                <label id="homeBalanceLbl" className="m-2">БАЛАНС:</label>
+        <label id="homeShowBalanceLbl" className="m-2">{accs[chosenIndex].balance} рублей</label>
                             </div>
                             <div className="form-row ">
                                 <button type="submit" className="btn btn-primary m-1 pb-1" id="homeDeposit">ПОПОЛНИТЬ</button>
@@ -96,11 +123,21 @@ refreshUser(){
                             </div>
                         </div>
                         <div className="border border-primary m-1 pb-1">
-                            <select id="homeAccNumberSelect" className="form-control pb-1">
-                                <option selected>4000000000</option>
-                                <option>...</option>
-                            </select>
-                            <button type="submit" className="btn btn-primary m-1 pb-1" id="homeOpen">ОТКРЫТЬ НОВЫЙ СЧЕТ</button>
+                            <Select 
+                            name="chosenAcc"
+                            defaultValue={{ label: accs[chosenIndex].accNumber, value: '2002' }}
+                            id="homeAccNumberSelect" 
+                            ref="homeAccNumberSelect"
+                            //className="form-control pb-1" 
+                            options = {options}
+                            onchange={value => this.handleChange(value)}>
+                            </Select>
+                            <NavLink className="d-inline p-2 bg-dark text-white" to="/open_new_account">ОТКРЫТЬ НОВЫЙ СЧЕТ</NavLink>
+                            <button 
+                            type="submit" 
+                            className="btn btn-primary m-1 pb-1" 
+
+                            id="homeOpen">ОТКРЫТЬ НОВЫЙ СЧЕТ</button>
                         </div>
                     </div>
                     <div className="form-row border border-primary">

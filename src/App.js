@@ -2,6 +2,10 @@ import React from 'react';
 import {Home} from './components/Home';
 import {Login} from './components/Login';
 import {Signup} from './components/Signup';
+import {Deposit} from './components/Deposit';
+import {Transfer} from './components/Transfer';
+import {OpenNewAccount} from './components/OpenNewAccount';
+import {Payment} from './components/Payment';
 import {PrivateRoute} from './components/PrivateRoute';
 //const jwt = require('jsonwebtoken');
 
@@ -49,6 +53,19 @@ export class App extends React.Component {
           <Route exact path='/signup'>
             <Signup login={this.signup} authorized={authorized}/>
           </Route>
+          <Route exact path='/deposit' authorized={authorized}>
+            <Deposit />
+          </Route>
+          <Route exact path='/transfer' authorized={authorized}>
+            <Transfer />
+          </Route>
+          <Route exact path='/payment' authorized={authorized}>
+            <Payment/>
+          </Route>
+          <Route exact path='/open_new_account' authorized={authorized}>
+            <OpenNewAccount />
+          </Route> 
+          
   
           {
             this.state.authorized ?
