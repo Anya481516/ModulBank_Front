@@ -32,7 +32,7 @@ export class App extends React.Component {
 
   signup = () => {
     this.setState({
-      authorized: true,
+      authorized: false,
     })
   }
 

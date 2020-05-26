@@ -112,9 +112,9 @@ refreshUser(){
         <label id="homeShowBalanceLbl" className="m-2">{accs[chosenIndex].balance} рублей</label>
                             </div>
                             <div className="form-row ">
-                                <button type="submit" className="btn btn-primary m-1 pb-1" id="homeDeposit">ПОПОЛНИТЬ</button>
-                                <button type="submit" className="btn btn-primary m-1 pb-1" id="homeTransfer">ПЕРЕВОД</button>
-                                <button type="submit" className="btn btn-primary m-1 pb-1" id="homePayment">ПЛАТЕЖ</button>
+                            <NavLink className="d-inline p-2 bg-dark text-white" to="/deposit">ПОПОЛНИТЬ</NavLink>
+                            <NavLink className="d-inline p-2 bg-dark text-white" to="/transfer">ПЕРЕВОД</NavLink>
+                            <NavLink className="d-inline p-2 bg-dark text-white" to="/payment">ПЛАТЕЖ</NavLink>
                             </div>
                             <div className="form-row">
                                 <button type="submit" className="btn btn-primary m-1 pb-1" id="homeInvoice">ВЫПИСКА</button>
@@ -133,11 +133,6 @@ refreshUser(){
                             onchange={value => this.handleChange(value)}>
                             </Select>
                             <NavLink className="d-inline p-2 bg-dark text-white" to="/open_new_account">ОТКРЫТЬ НОВЫЙ СЧЕТ</NavLink>
-                            <button 
-                            type="submit" 
-                            className="btn btn-primary m-1 pb-1" 
-
-                            id="homeOpen">ОТКРЫТЬ НОВЫЙ СЧЕТ</button>
                         </div>
                     </div>
                     <div className="form-row border border-primary">

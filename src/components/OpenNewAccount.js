@@ -13,7 +13,7 @@ export class OpenNewAccount extends React.Component {
         });
       }
 
-      handleOpen(completion) {
+      handleOpen() {
         //event.preventDefault()
         //this.props.userLoginFetch(this.state)
         
@@ -35,7 +35,6 @@ export class OpenNewAccount extends React.Component {
       } else {
         // вывести результат
         alert( xhr.responseText ); // responseText -- текст ответа.
-        completion();
       }
       }
 
@@ -62,10 +61,13 @@ export class OpenNewAccount extends React.Component {
                   value={this.state.sum}
                   onChange={this.handleChange}/>
               </div>
-              <button onClick={
+              <NavLink 
+               onClick={
                 () =>
-                this.handleOpen(this.props.login)
-                } type="submit" className="btn btn-primary">Открыть</button>
+                this.handleOpen()
+                }
+                className="d-inline p-2 bg-dark text-white" 
+                to="/home">Открыть</NavLink>
             </form>
               </div>
           )

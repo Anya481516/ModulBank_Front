@@ -95,13 +95,21 @@ export class Signup extends React.Component {
               <input type="password" className="form-control" id="signupPassword2Txt" placeholder="Подтвердите пароль"/>
             </div>
             <div className="form-group">
-            <button 
+            <NavLink 
+            onClick={ () =>
+              this.handleSubmit(this.props.login)
+              //this.props.login 
+             } 
+            className="d-inline p-2 bg-dark text-white" 
+            to="/login"
+            >Зарегистрироваться</NavLink>
+            {/* <button 
               onClick={ () =>
                  this.handleSubmit(this.props.login)
                  //this.props.login 
                 } 
               type="submit" 
-              className="btn btn-primary">Зарегистрироваться</button>
+              className="btn btn-primary">Зарегистрироваться</button> */}
             </div>
             <div className="form-group">
               <NavLink className="d-inline p-2 bg-dark text-white" to="/login">АВТОРИЗАЦИЯ</NavLink>
